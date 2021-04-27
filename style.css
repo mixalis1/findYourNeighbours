@@ -1,0 +1,316 @@
+/*
+Ενδεικτικοί επιλογείς για τη διαμόρφωση του στυλ
+
+Μπορείτε να προσθέσετε τις δηλώσεις στους παρακάτω κανόνες και να εμπλουτίσετε με δικούς σας κανόνες.
+*/
+
+
+/* Χρειάζεται για να φανούν οι σημαίες στους φυλλομετρητές chrome-based από Windows 10 */
+
+@font-face {
+    font-family: 'TwemojiMozilla';
+    src: url('TwemojiMozilla.ttf');
+}
+
+body {
+    margin: 40px;
+    font-family: 'Open Sans', 'TwemojiMozilla';
+    /* Η γραμματοσειρά open sans φορτώνεται στο αρχείο html*/
+    background-color: #fff;
+    color: #444;
+    
+}
+
+.game-panel {
+    display: grid;
+    grid-template-areas:"sidebar my-country my-country my-country   "
+    "sidebar progress progress progress  "
+    "sidebar  neighbours-panel neighbours-panel neighbours-panel ";
+    grid-template-columns: 0.8fr 1fr 1fr ;
+    grid-template-rows: 2fr 0.2fr 8fr ;
+    grid-gap: 10px;
+}
+
+@media (max-width: 800px) {
+
+    body{
+        margin: 10px;
+    }
+    
+    .game-panel {
+        
+        grid-template-areas:"sidebar"
+        "my-country " "progress"
+        "neighbours-panel ";
+        grid-template-columns:  1fr ;
+        grid-template-rows:0.1fr 0.1fr;
+        grid-gap: 5px;
+    }
+    
+#sidebar{
+    display: flex;
+    flex-wrap: nowrap;
+}
+#find-neighbourd{
+    color: white;
+    text-align: center;
+    top: 10%;
+    font-size: 1.5em;
+    margin: auto;
+    height: auto;
+
+}
+
+    #next-round-panel {
+        display: flex;
+        padding: 11px;
+        flex-direction: row;
+        align-content: stretch;
+        justify-content: space-around;
+        margin: 30px 20px 30px 20px;
+        }
+        #next-country {
+            display: flex;
+            padding: 8px;
+            background-color: white;
+            text-align: center;
+            color: grey;
+            align-content: center;
+            justify-content: center;
+            flex-direction: row;
+            margin: 30px 20px 10px 20px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            
+        }
+        #buton{
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            align-content: center;
+            flex-wrap: nowrap;
+            margin: 0px -19px 0px -19px;
+        }
+
+        #rousco{
+            display: flex;
+            margin: 30px 0px 0px 81px;
+        }
+
+        #progress{
+            height: 20px;
+        }
+
+
+
+
+        
+        /* ενδεικτικά */
+    /*  ... */
+}
+
+#my-country {
+    display: flex;
+    background-color:#708090;
+    grid-area: my-country;
+    border-radius: 5px;
+}
+
+#sidebar {
+    background-color:#ff1493;
+    grid-area: sidebar;
+    height: auto;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    align-items: stretch;
+    align-content: center;
+    justify-content: space-evenly;
+    
+    
+}
+
+
+#neighbours-panel {
+    display: flex;
+    grid-area: neighbours-panel;
+    border-radius: 5px;
+    flex-wrap: wrap;
+}
+
+
+
+#my-country-flag {
+    padding: 20px;
+    align-self: center;
+    font-size: 60px;
+}
+
+#my-country-name {
+    align-self: center;
+    color: white;
+}
+
+#next-round-panel {
+    display: flex;
+    padding: 8px;
+    background-color: white;
+    justify-content: center;
+
+}
+#next-country{
+    display: flex;
+    padding: 8px;
+    background-color: white;
+    text-align: center;
+    color: grey;
+    justify-content: center;
+}
+#find-neighbourd{
+    color: white;
+    text-align: center;
+    top: 10%;
+    font-size: 1.5em;
+    
+
+}
+
+#progress {
+    /*border-radius: 5px;*/
+    /* background-color:#0064b4; για το java script οταν θα φορτωνει */
+    /*background-color:lightgray;
+    
+    position: sticky;
+    top:1px;*/
+    background-color: lightgray;
+  border-radius: 5px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+  grid-area: progress;
+}
+
+#progress-bar {
+    background-color: #0064b4;;
+    width: 0%;
+    /* Adjust with JavaScript */
+    height: 20px;
+}
+
+
+/* ειδικά για τους φυλλομετρητές που προέρχονται από τον chrome καθώς 
+υποστηρίζουν λιγότερο καλά το στοιχείο progress από ότι ο firefox,
+όσον αφορά το CSS (που και σε αυτόν έχει προβληματική υποστήριξη)
+*/
+
+#progress::-webkit-progress-bar {
+    border-radius: 5px;
+}
+.displayed-countries-wrapper{
+    text-align: center;
+    width: 140px;
+}
+
+.displayed-flag {
+    padding: 20px;
+    /*align-self: center;*/
+    font-size: 60px;
+}
+
+#round {
+    color: white;
+    text-align: center;
+    display: flex;
+}
+
+#score {
+    color: white;
+    text-align: center;
+    display: flex;
+}
+
+#test {
+    display: flex;
+    grid-area: neighbours-panel;
+    border-radius: 5px;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    z-index: -1;
+    color: black;
+    font-weight: bolder;
+    font-size: 35px;
+    background-color: rgb(160,160,160,0.8);
+}
+
+#info{
+    text-align: center;
+    background-color: #fdfdfd;
+    border: 1px solid black;
+    display: none;
+    grid-area: neighbours-panel;
+    align-content: center;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: 35px;
+    display: none;
+    z-index: 100;
+    align-self: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-content: stretch;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 456px;
+    margin: 7px 0px 19px 24%;
+    max-height: 152px;
+    padding: 23px 0 18px 0px;
+    
+    
+}
+#butt{
+    background-color: #80808047;
+    display: flex;
+    justify-items: center;
+    flex-direction: row;
+    align-content: stretch;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 20px 0;
+    margin: 33px 0 0 0;
+    
+    
+    
+}
+#ok{
+    margin: 0px 30px 0 0px;
+    padding: 0px 20px 0px 20px;
+    
+}
+
+#container{
+    display: flex;
+    grid-area: neighbours-panel;
+    border-radius: 5px;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    z-index: -1;
+    color: black;
+    font-weight: bolder;
+    font-size: 35px;
+   }
+   #buton{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    margin: 3px;
+}
+
+#rousco{
+    display: flex;
+    flex-direction: column;
+    margin: 30px 0px 0px 60px;
+}

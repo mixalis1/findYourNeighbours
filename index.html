@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Βρες τους γείτονες</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="countries.js"></script>
+    
+    
+    </script>
+</head>
+
+<body>
+    <div class="game-panel">
+        <div id="sidebar">
+            <div id="find-neighbourd">Βρες τους γειτονες</div>
+            <div id="rousco">
+                <div id="round"></div><br>
+            <div id="score"></div>
+        </div>
+        <div id="buton">
+            <div id="next-country" onclick="handleCLick()" value="Επομενη χωρα">Επομενη χωρα</div>
+            <p onclick="popUp()" id="next-round-panel"value="Νεο παιχνιδι">Νεο παιχνιδι</p>
+        </div>
+
+        </div>
+            
+            
+        <div id="my-country">
+            <div id="my-country-flag"></div>
+            <div id="my-country-name"></div>
+        </div>
+        <div id="progress"><div id="progress-bar"></div></div>
+        <div id="neighbours-panel"></div>
+        <div id="test"></div>
+        <div id="container"></div>
+            <div id="info">Σιγουρα?Θα χασετε ολο το σκορ
+                <div id="butt">
+                    <input type="button" id="ok" value="OK">
+                    <input type="button" id="Cancel" value="Cancel">
+                </div>
+            </div>
+            
+        
+        
+    </div>
+</body>
+<script>
+
+function randomCountry(array, array2) {
+	const randomNumber = Math.floor(Math.random() * array2.length-1);
+	const country = array2[randomNumber].code3;
+	return array[country];
+}
+
+let okk= document.querySelector("#ok");
+let cans= document.querySelector("#Cancel");
+let info=document.querySelector("#info");
+
+okk.addEventListener("click",Klick);
+cans.addEventListener("click",KlickS);
+
+function randomCountry(array, array2) {
+	const randomNumber = Math.floor(Math.random() * array2.length-1);
+	const country = array2[randomNumber].code3;
+	return array[country];
+}
+
+
+function popUp(){
+    info.style.display="flex";
+    info.style.zIndex="100";
+    document.querySelector("#neighbours-panel").style.backgroundColor="rgb(160,160,160,0.8)";
+    
+    
+    
+    
+    
+
+    }
+
+    function Klick(){
+        if( okk =true){
+            info.style.display="none";
+            document.querySelector("#neighbours-panel").style.backgroundColor="white"
+            handleNewGameClick()
+        }
+    }
+    function KlickS(){
+        if( cans =true){
+            info.style.display="none";
+            document.querySelector("#neighbours-panel").style.backgroundColor="white"
+            
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    class Game {
+        constructor() {
+            this.nextRoundEnabled = false;
+            this.displayedCountries = [];
+            this.correct = 0;
+            this.false = 0;
+            this.round = 1;
+            this.score = 0;
+            this.allCountries = new Array();
+            countryObjects.forEach(item => {
+                this.allCountries[item.code3] = { code: item.code, name: item.name}
+            });
+            this.nextRound();
+        }
+        nextRound() {
+            document.getElementById('test').innerHTML = '';
+            document.getElementById('test').style.backgroundColor="white";
+            document.getElementById('test').style.zIndex="-1";
+
+            document.getElementById('next-country').style.color = 'gray';
+            this.nextRoundEnabled = false;
+            showScore(this.score);
+            showRound(this.round);
+            // ΕΔς ΜΗΔΕΝΙΖΩ ΤΑ DIV ELEMENTS ME TIS SHMAIES
+            var elements = document.getElementsByClassName('displayed-countries-wrapper');
+            while(elements.length > 0){
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+            var el = document.getElementById('neighbours-panel');
+            this.displayedCountries = [];
+            var __this = this;
+            //εδω παιρνω την χωρα
+            const country = randomCountry(this.allCountries, countryObjects);
+            console.log(country.name);
+            // φτιαχνω τη σημαια
+            document.getElementById('my-country-flag').innerHTML = country2emoji2(country.code);
+            // φτιαχνω το name 
+            document.getElementById('my-country-name').innerHTML = country.name;
+
+            fetch(`https://restcountries.eu/rest/v2/alpha/${country.code}`)
+            .then(response => response.json())
+            .then(data => {
+
+                 this.bordersCountry = [...data.borders]; // ['GRE', 'ALB']
+
+                 if(this.bordersCountry.length === 0) {
+                    document.getElementById('next-country').style.color = 'black';
+                    this.nextRoundEnabled = true;
+                 } else {
+                        console.log(this.bordersCountry);
+                        // edw vlepw poses akoma countries prepei na pros8esw
+                         let restCountriesLength = this.bordersCountry.length * 2;
+
+                         //PROS8ETEI STO BORDERSCOUNTRY TA REMAINING RANDOM COUNTRIES
+                        for(let i = 1; i <= restCountriesLength; i++) {
+                            // filter oles tis xwres sto country object ektos apo tis geitonikes(bordersCountry).
+                            countryObjects.filter(item => !this.bordersCountry.includes(item.code3));
+                            let randomNumber = Math.floor(Math.random() * countryObjects.length-1);
+                            this.bordersCountry.push(countryObjects[randomNumber].code3);
+                        }
+                        // kanw shuffle to array gia na kanw display tis xwres me tuxaia seira.
+                        shuffleArray(this.bordersCountry);
+                        
+                        // gemizoume to displayCountries me ta data tis ka8e xwras.
+                         this.bordersCountry.forEach(country => {
+                            this.displayedCountries[country] = this.allCountries[country];
+                         });
+                         
+                         Object.keys(this.displayedCountries).forEach(item => {
+                            let country = countryObjects.find(country => country.code3 === item); // {name: 'Albania', code3: 'ALB', code: 'al'}
+    
+                            var divWrapper = document.createElement("div");
+                            var divFlag = document.createElement("div");
+                            var divName = document.createElement("div");
+                            divWrapper.classList.add("displayed-countries-wrapper");
+                            divFlag.classList.add("displayed-flag");
+                            divName.innerHTML = country.name;
+                            divFlag.innerHTML = country2emoji2(country.code);
+                            divWrapper.setAttribute("id", country.code3);
+                            divName.setAttribute("id", country.code3);
+                            divFlag.setAttribute("id", country.code3);
+
+                            document.getElementById('neighbours-panel').appendChild(divWrapper);
+                            document.getElementById(country.code3).appendChild(divFlag);
+                            document.getElementById(country.code3).appendChild(divName);
+                            
+                            divWrapper.addEventListener("click", function(event) {
+                                var _this = __this;                      
+                                if(_this.nextRoundEnabled) {
+                                        event.stopImmediatePropagation();
+                                    } else {
+
+                                        if(data.borders.includes(event.target.id)) {
+                                            
+                                            divWrapper.style.border = '2px solid green';
+                                            divWrapper.style.borderRadius = '10px';
+                                            
+                                            showScore(_this.score += 5);
+                                            _this.correct++;
+                                            let widthPercentage = (_this.correct / data.borders.length) * 100;
+                                            document.getElementById('progress-bar').style.width = `${widthPercentage}%`;                                    
+                                            if(_this.correct === data.borders.length) {
+                                                _this.nextRoundEnabled = true;
+                                                document.getElementById('next-country').style.color = 'black';
+                                                document.getElementById('test').innerHTML = 'Τους βρήκατε όλους'
+                                                document.getElementById('test').style.backgroundColor="rgb(160,160,160,0.8)";
+                                                document.getElementById('test').style.zIndex="0";
+                                                
+                                           }
+                                        } else {
+                                           divWrapper.style.border = '2px solid red';
+                                           divWrapper.style.borderRadius = '10px';
+                                           showScore(_this.score -= 3);
+                                           _this.false++;
+                                           if(_this.false === data.borders.length) {
+                                             _this.nextRoundEnabled = true;
+                                             document.getElementById('next-country').style.color = 'black';
+                                             document.getElementById('test').innerHTML = 'Κρίμα, χάσατε!';
+                                             document.getElementById('test').style.color="#8b0101";
+                                             document.getElementById('test').style.backgroundColor="rgb(160,160,160,0.8)";
+                                             document.getElementById('test').style.zIndex="0";
+                                           }
+                                        }
+                                    }
+                            })
+                         });    
+
+                }
+            });
+        }
+    }
+    let game = new Game();
+
+    function showScore(score) {
+        document.getElementById('score').innerHTML = '     ';
+        document.getElementById('score').innerHTML = `Σκορ:${score}`; 
+    }
+
+    function showRound(round) {
+        document.getElementById('round').innerHTML = '    ';
+        document.getElementById('round').innerHTML = `ΓΥΡΟΣ:${round}`; 
+    }
+
+    function handleCLick(e) {
+        if(!game.nextRoundEnabled) {
+            e.stopImmediatePropagation();
+        } else {
+            document.getElementById('progress-bar').style.width = '0%';
+            game.round += 1;
+            game.correct = 0;
+            game.false = 0;
+            game.nextRound();
+        }
+    }
+
+    function handleNewGameClick() {
+        document.getElementById('progress-bar').style.width = '0%';
+        game = new Game();
+    }
+    
+
+//Το παρακάτω αφορά μόνο τους χρήστες macOS.
+if (navigator.appVersion.indexOf("Macintosh")>0){
+  document.body.style.fontFamily = '"Open Sans"';
+}
+</script>
+</html>
